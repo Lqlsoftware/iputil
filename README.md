@@ -21,7 +21,7 @@ iputil.get_region("60.30.1.1")
 
 An independent tool named `ip2region` will be install in your path.
 
-Just type `ip2region` will start a prompt:
+Typing `ip2region` will start a prompt:
 ```shell
 $ ip2region
 ip> 192.168.0.1
