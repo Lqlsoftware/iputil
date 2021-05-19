@@ -1,0 +1,14 @@
+LICENSE.md
+MANIFEST.in
+README.md
+setup.py
+iputil/__init__.py
+iputil/api.py
+iputil/ip2region.py
+iputil/region.py
+iputil.egg-info/PKG-INFO
+iputil.egg-info/SOURCES.txt
+iputil.egg-info/dependency_links.txt
+iputil.egg-info/entry_points.txt
+iputil.egg-info/top_level.txt
+iputil/data/ip2region.db
