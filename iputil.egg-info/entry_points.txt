@@ -1,3 +1,0 @@
-[console_scripts]
-ip2region = ip2region:main
-

@@ -26,17 +26,18 @@ def main():
                 searcher.close()
                 exit(-1)
             region = searcher.binarySearch(IP)
-            print("[%s]\t%s\n" % (IP, region["region"]))
+            print("[%s]\t%s\n" % (IP, region))
             searcher.close()
             exit(0)
-            
+
         while(True):
             IP = input("ip> ")
             if not searcher.isip(IP):
                 print("[%s] is not a valid IP.\n" % IP)
                 continue
             region = searcher.binarySearch(IP)
-            print("[%s]\t%s\n" % (IP, region["region"]))
+            print("[%s]\t%s\n" % (IP, region))
+
     except KeyboardInterrupt as e:
         searcher.close()
         exit(0)

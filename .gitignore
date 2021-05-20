@@ -3,6 +3,6 @@ __pycache__
 
 build
 dist
-avutil.egg-info
+iputil.egg-info
 
 .DS_Store

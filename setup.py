@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="iputil",
-    version="0.1.0",
+    version="0.1.1",
     author="Robin Lu",
     description="Provide some useful util functions and a tool (ip2region) for ip processing",
     long_description=long_description,
