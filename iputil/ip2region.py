@@ -17,27 +17,21 @@ def get_arguments(args=sys.argv[1:]):
 def main():
     args = get_arguments()
 
-    try:
-        searcher = iputil.region_db
-        if args.ip is not None:
-            IP = args.ip
-            if not searcher.isip(IP):
-                print("%s is not a valid IP.\n" % IP)
-                searcher.close()
-                exit(-1)
-            region = searcher.binarySearch(IP)
-            print("[%s]\t%s\n" % (IP, region))
-            searcher.close()
-            exit(0)
+    if args.ip is not None:
+        if not iputil.valid_ip(args.ip):
+            print("%s is not a valid IP.\n" % args.ip)
+            exit(-1)
+        region = iputil.get_region(args.ip)
+        print("[%s]\t%s\n" % (args.ip, region))
+        exit(0)
 
+    try:
         while(True):
             IP = input("ip> ")
-            if not searcher.isip(IP):
+            if not iputil.valid_ip(IP):
                 print("[%s] is not a valid IP.\n" % IP)
                 continue
-            region = searcher.binarySearch(IP)
+            region = iputil.get_region(IP)
             print("[%s]\t%s\n" % (IP, region))
-
     except KeyboardInterrupt as e:
-        searcher.close()
         exit(0)

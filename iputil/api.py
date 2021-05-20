@@ -1,13 +1,26 @@
-#-*- coding:utf-8 -*-
 import iputil
 
-def get_region(ip, algorithm="binary"):
-    if not iputil.region_db.isip(ip):
-        return ""
-        
-    if algorithm == "binary":
-        data = iputil.region_db.binarySearch(ip)
-    else:
-        data = iputil.region_db.memorySearch(ip)
 
-    return data
+def get_region(ip, algorithm="binary"):
+    if not valid_ip(ip):
+        return ""
+    try:
+        return iputil.region_db.binarySearch(ip)
+    except Exception:
+        return ""
+
+
+def valid_ip(ip):
+    p = ip.split(".")
+
+    if len(p) != 4:
+        return False
+    for pp in p:
+        if not pp.isdigit():
+            return False
+        if len(pp) > 3:
+            return False
+        if int(pp) > 255:
+            return False
+
+    return True
