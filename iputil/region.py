@@ -29,16 +29,16 @@ class Ip2Region(object):
         if Ip2Region.dbfile is None:
             try:
                 with io.open(data_file, "rb") as f:
-                    Ip2Region.dbfile = bytes(f.read())
+                    Ip2Region.dbfile = f.read()
             except IOError as e:
                 print("[Error]: %s" % e)
                 sys.exit()
 
         # initialize superBlock
         if self.__indexCount == 0:
-            self.__superBlock = Ip2Region.dbfile[0:8]
-            self.__indexSPtr = self.getLong(self.__superBlock, 0)
-            self.__indexLPtr = self.getLong(self.__superBlock, 4)
+            superBlock = Ip2Region.dbfile[0:8]
+            self.__indexSPtr = self.getLong(superBlock, 0)
+            self.__indexLPtr = self.getLong(superBlock, 4)
             self.__indexCount = int(
                 (self.__indexLPtr - self.__indexSPtr) / self.__INDEX_BLOCK_LENGTH) + 1
 
@@ -54,19 +54,15 @@ class Ip2Region(object):
         l, h, dataPtr = (0, self.__indexCount, 0)
         while l <= h:
             m = int((l + h) >> 1)
-            p = m * self.__INDEX_BLOCK_LENGTH
+            p = self.__indexSPtr + m * self.__INDEX_BLOCK_LENGTH
 
-            sip = self.getLong(Ip2Region.dbfile, self.__indexSPtr + p)
-            if ip < sip:
+            if ip < self.getLong(Ip2Region.dbfile, p):
                 h = m - 1
+            elif ip > self.getLong(Ip2Region.dbfile, p + 4):
+                l = m + 1
             else:
-                eip = self.getLong(Ip2Region.dbfile, self.__indexSPtr + p + 4)
-                if ip > eip:
-                    l = m + 1
-                else:
-                    dataPtr = self.getLong(
-                        Ip2Region.dbfile, self.__indexSPtr + p + 8)
-                    break
+                dataPtr = self.getLong(Ip2Region.dbfile, p + 8)
+                break
 
         if dataPtr == 0:
             raise Exception("Data pointer not found")
@@ -74,7 +70,7 @@ class Ip2Region(object):
         # Extract data
         dataLen = ((dataPtr >> 24) & 0xFF) - 4
         dataPtr = (dataPtr & 0x00FFFFFF) + 4
-        retData = Ip2Region.dbfile[dataPtr: dataPtr + dataLen].decode('utf-8')
+        retData = Ip2Region.dbfile[dataPtr:dataPtr + dataLen].decode('utf-8')
 
         return retData
 
@@ -83,6 +79,6 @@ class Ip2Region(object):
         return struct.unpack("!L", _ip)[0]
 
     def getLong(self, b, offset):
-        if len(b[offset:offset+4]) == 4:
-            return struct.unpack('I', b[offset:offset+4])[0]
+        if len(b[offset:offset + 4]) == 4:
+            return struct.unpack('I', b[offset:offset + 4])[0]
         return 0

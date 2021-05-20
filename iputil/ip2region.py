@@ -10,7 +10,7 @@ def get_arguments(args=sys.argv[1:]):
     parser = argparse.ArgumentParser(
         description="IP to Region")
     parser.add_argument("-ip", "--ip", dest='ip',
-        help="Search specify IP")
+                        help="Search specify IP")
     return parser.parse_args(args)
 
 
