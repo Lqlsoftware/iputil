@@ -14,33 +14,36 @@ import iputil
 
 class Ip2Region(object):
     dbfile = None
+    data_file = ""
 
     def __init__(self):
         self.__INDEX_BLOCK_LENGTH = 12
         self.__indexSPtr = 0
         self.__indexLPtr = 0
         self.__indexCount = 0
-        data_file = os.path.join(
-            os.path.dirname(iputil.__file__),
-            "data/ip2region.db"
-        )
 
         # Open DB File & load into memory
         if Ip2Region.dbfile is None:
-            try:
-                with io.open(data_file, "rb") as f:
-                    Ip2Region.dbfile = f.read()
-            except IOError as e:
-                print("[Error]: %s" % e)
-                sys.exit()
+            self.setSource(os.path.join(
+                os.path.dirname(iputil.__file__),
+                "data/ip2region.db"
+            ))
 
-        # initialize superBlock
-        if self.__indexCount == 0:
+    def setSource(self, data_file):
+        try:
+            Ip2Region.data_file = data_file
+            with io.open(Ip2Region.data_file, "rb") as f:
+                Ip2Region.dbfile = f.read()
+
+            # initialize superBlock
             superBlock = Ip2Region.dbfile[0:8]
             self.__indexSPtr = self.getLong(superBlock, 0)
             self.__indexLPtr = self.getLong(superBlock, 4)
             self.__indexCount = int(
                 (self.__indexLPtr - self.__indexSPtr) / self.__INDEX_BLOCK_LENGTH) + 1
+        except IOError as e:
+            print("[Error]: %s" % e)
+            sys.exit()
 
     def binarySearch(self, ip):
         """

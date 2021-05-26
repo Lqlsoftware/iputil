@@ -17,6 +17,19 @@ iputil.get_region("60.30.1.1")
 # return string '中国|0|天津|天津|联通'
 ```
 
+Although region data in this program will update with the [@ip2region](https://github.com/lionsoul2014/ip2region) repo, or your can specify your own data source:
+```python
+import iputil
+
+# Set Region source
+iputil.set_region_source(data_file="ip2region.db")
+
+# Get Region by IP
+iputil.get_region("60.30.1.1")
+# return string '中国|0|天津|天津|联通'
+```
+
+
 # Tools
 
 An independent tool named `ip2region` will be install in your path.
