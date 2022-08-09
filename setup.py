@@ -5,12 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="iputil",
-    version="0.2.3",
+    version="0.3.1",
     author="Robin Lu",
     description="Provide some useful util functions and a tool (ip2region) for ip processing",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
+    package_data={'iputil': ['data/ip2region.xdb']},
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",

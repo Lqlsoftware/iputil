@@ -2,14 +2,14 @@ import iputil
 
 
 def set_region_source(data_file):
-    iputil.region_db.setSource(data_file)
+    region_db.initDatabase(dbfile=data_file)
 
 
 def get_region(ip):
     if not valid_ip(ip):
         return ""
     try:
-        return iputil.region_db.binarySearch(ip)
+        return iputil.region_db.search(ip)
     except Exception:
         return ""
 

@@ -1,4 +1,4 @@
-from iputil.region import *
+from iputil.xdbSearcher import *
 from iputil.api import *
 
-region_db = Ip2Region()
+region_db = XdbSearcher()
